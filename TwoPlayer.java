@@ -1,12 +1,12 @@
 import java.util.Scanner;
-public class GameTester {
+import org.apache.commons.math3.distribution.BetaDistribution;
+public class TwoPlayer {
     public static void main(String[] args) {
+        BetaDistribution b = new BetaDistribution(1,.5);
+        System.out.println(b.sample());
         Board board = new Board();
         Scanner input = new Scanner(System.in);
-        int turn = -1;
-        int[] markers = {1,2};
         while (!board.getGameover()) {
-            turn++;
             board.display();
             try {
                 if(!board.canMove()) {
@@ -15,14 +15,18 @@ public class GameTester {
                     } while (!board.setBoard(input.nextInt(), input.nextInt()));
                 }
                 do {
-                    System.out.println("It's " + markers[turn % 2]
+                    System.out.println("It's " + board.getMarker()
                         +  "'s turn. Make a move on board " + board.getNextBoard());
-                } while(!board.addMarker(input.nextInt(), input.nextInt(),
-                    markers[turn % 2]));
+                } while(!board.addMarker(input.nextInt(), input.nextInt()));
                 input.nextLine();
-        } catch (ArrayIndexOutOfBoundsException e) {
+            } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("ERROR! Invalid selection! \n");
+            }
         }
-    }
+        if (board.getDraw()) {
+            System.out.println("It's a draw");
+        } else {
+            System.out.println("Player " + board.getMarker() + " has won.");
+        }
     }
 }
