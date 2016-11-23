@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.util.Arrays;
 public class OnePlayer {
     public static Board board = new Board();
     public static Scanner input = new Scanner(System.in);
@@ -49,7 +48,6 @@ public class OnePlayer {
             System.out.println("ERROR! Invalid selection! \n");
             }
         }
-        System.out.println(Arrays.deepToString(opponentMove));
         bot.updateRoot(opponentMove);
     }
     public static void gameover() {
