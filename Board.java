@@ -187,6 +187,7 @@ public class Board implements Cloneable {
         return possibleMoves;
     }
     public void display() {
+        System.out.println();
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i][0].length; j++) {
                 for (int k = 0; k < board[i].length; k++) {
