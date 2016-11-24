@@ -30,7 +30,6 @@ public class PlayerNode extends MonteCarloTreeNode {
                 selected = i;
             }
         }
-        System.out.println(value);
         return (OpponentNode) super.getChildren().get(selected);
     }
 }
