@@ -55,7 +55,7 @@ public abstract class MonteCarloTreeNode {
         } else if (board.getMarker() == myMarker) {
             return new double[] {1, 0};
         } else {
-            return new double[] {0, -1};
+            return new double[] {0, 1};
         }
     }
     protected abstract MonteCarloTreeNode generateChild(int[][] move);

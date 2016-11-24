@@ -15,6 +15,9 @@ public class OnePlayer {
     public static void playerOne() {
         while (!board.getGameover()) {
             playerTurn();
+            if (board.getGameover()) {
+                break;
+            }
             bot.makeMove();
         }
         gameover();
@@ -22,6 +25,9 @@ public class OnePlayer {
     public static void playerTwo() {
         while (!board.getGameover()) {
             bot.makeMove();
+            if (board.getGameover()) {
+                break;
+            }
             playerTurn();
         }
         gameover();
@@ -29,7 +35,7 @@ public class OnePlayer {
     public static void playerTurn() {
         int playerMarker = board.getMarker();
         int[][] opponentMove = {{-1, -1}, {}};
-        while (board.getMarker() == playerMarker) {
+        while (board.getMarker() == playerMarker && !board.getGameover()) {
             try {
                 board.display();
                 if(!board.canMove()) {
