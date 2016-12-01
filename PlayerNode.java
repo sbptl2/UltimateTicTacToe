@@ -20,12 +20,14 @@ public class PlayerNode extends MonteCarloTreeNode {
         return (OpponentNode) super.getChildren().get(selected);
     }
     public OpponentNode maxNode() {
-        double maxValue = getChildren().get(0).getAlpha() + getChildren().get(0).getBeta();
+        double maxValue = getChildren().get(0).getAlpha() + getChildren().get(0)
+            .getBeta();
         double value = 0;
         int selected = 0;
         for(int i = 1; i < getChildren().size(); i++) {
-            value = getChildren().get(i).getAlpha() + getChildren().get(i).getBeta();
-            if(value > maxValue) {
+            value = getChildren().get(i).getAlpha() + getChildren().get(i)
+                .getBeta();
+            if (value > maxValue) {
                 maxValue = value;
                 selected = i;
             }

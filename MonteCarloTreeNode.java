@@ -1,5 +1,6 @@
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.Arrays;
 import org.apache.commons.math3.distribution.BetaDistribution;
 public abstract class MonteCarloTreeNode {
     private ArrayList<MonteCarloTreeNode> children = new
@@ -77,22 +78,17 @@ public abstract class MonteCarloTreeNode {
     public ArrayList<MonteCarloTreeNode> getChildren() {
         return children;
     }
-    private void expandChildren(Board board) {
-        for (MonteCarloTreeNode child : children) {
-            child.populate(board);
-        }
-    }
     public double[] trial(Board board) {
         double[] update;
         if (children.size() == 0) {
             update = this.randomlyPlay(board);
         } else {
             MonteCarloTreeNode node = selectChild();
-            node.visited = true;
-            if (!childrenVisited && visitedAll()) {
-                expandChildren(board);
-            }
             node.applyMove(board);
+            if (node.visited) {
+                node.populate(board);
+            }
+            node.visited = true;
             update = node.trial(board);
         }
         updateAlphaBeta(update);

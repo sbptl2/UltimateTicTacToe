@@ -61,14 +61,15 @@ public class Board implements Cloneable {
     public boolean setBoard(int x, int y) {
         if (!canMove()) {
             nextboard = new int[] {x,y};
+            return canMove();
         }
-        return canMove();
+        return false;
     }
-    public boolean setBoard(int[] board) {
-        if (board.length != 2) {
+    public boolean setBoard(int[] newBoard) {
+        if (newBoard.length != 2) {
             throw new IllegalArgumentException("Invalid dimensions");
         }
-        return setBoard(board[0], board[1]);
+        return setBoard(newBoard[0], newBoard[1]);
     }
     public boolean canMove() {
         if (victories[nextboard[0]][nextboard[1]] != 0) {
@@ -85,7 +86,9 @@ public class Board implements Cloneable {
         return false;
     }
     public boolean legalMove(int w, int x, int y, int z) {
-        int[] original = {nextboard[0], nextboard[1]};
+        int[] original = new int[2];
+        original[0] = nextboard[0];
+        original[1] = nextboard[1];
         boolean out = setBoard(w, x) && legalMove(y, z);
         nextboard = original;
         return out;
@@ -120,8 +123,8 @@ public class Board implements Cloneable {
         if(move.length != 2 || move[0].length != 2 || move[1].length != 2) {
             throw new IllegalArgumentException("Move has invalid dimensions.");
         }
-        setBoard(move[0][0], move[0][1]);
-        addMarker(move[1][0], move[1][1]);
+        setBoard(move[0]);
+        addMarker(move[1]);
     }
     private boolean boardWin(int[][] boardIn, int x, int y, int marker) {
         if (boardIn[x][(y + 1) % 3] == marker
@@ -182,6 +185,15 @@ public class Board implements Cloneable {
                         possibleMoves.add(new int[][] {{-1, -1},{i, j}});
                     }
                 }
+            }
+        }
+        for (int[][] move : possibleMoves) {
+            Board temp = this.clone();
+            temp.applyMove(move);
+            if (temp.gameover) {
+                possibleMoves = new ArrayList<>();
+                possibleMoves.add(move);
+                break;
             }
         }
         return possibleMoves;
