@@ -16,7 +16,7 @@ public class TwoPlayer {
                 }
                 do {
                     System.out.println("It's " + board.getMarker()
-                        +  "'s turn. Make a move on board " + board.getNextBoard());
+                        +  "'s turn. Make a move on board " + board.printNextBoard());
                 } while(!board.addMarker(input.nextInt(), input.nextInt()));
                 input.nextLine();
             } catch (ArrayIndexOutOfBoundsException e) {

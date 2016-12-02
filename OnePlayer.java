@@ -38,7 +38,7 @@ public class OnePlayer {
     }
     public static void playerTurn() {
         int playerMarker = board.getMarker();
-        int[][] opponentMove = {{-1, -1}, {}};
+        int[][] opponentMove = {board.getNextBoard(), {}};
         while (board.getMarker() == playerMarker && !board.getGameover()) {
             try {
                 board.display();
@@ -52,7 +52,7 @@ public class OnePlayer {
                 do {
                     System.out.println("It's " + board.getMarker()
                         +  "'s turn. Make a move on board " + board
-                            .getNextBoard());
+                            .printNextBoard());
                     opponentMove[1] = new int[] {input.nextInt(), input
                             .nextInt()};
                 } while(!board.addMarker(opponentMove[1]));

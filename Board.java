@@ -46,6 +46,9 @@ public class Board implements Cloneable {
     public Board clone() {
         return new Board(gameover, victories, nextboard, board, marker);
     }
+    public int[][] getVictories() {
+        return victories;
+    }
     public int getMarker() {
         return marker;
     }
@@ -55,8 +58,11 @@ public class Board implements Cloneable {
     public boolean getGameover() {
         return gameover;
     }
-    public String getNextBoard() {
+    public String printNextBoard() {
         return nextboard[0] + " , " + nextboard[1];
+    }
+    public int[] getNextBoard() {
+        return nextboard;
     }
     public boolean setBoard(int x, int y) {
         if (!canMove()) {
@@ -95,6 +101,14 @@ public class Board implements Cloneable {
     }
     public boolean legalMove(int x, int y) {
         return board[nextboard[0]][nextboard[1]][x][y] == 0;
+    }
+    public boolean checkMove(int w, int x, int y, int z) {
+        if (!canMove()) {
+            return legalMove(w, x, y, z);
+        } else {
+            return (w == nextboard[0]) && (x == nextboard[1]) &&
+                legalMove(y, z);
+        }
     }
     public boolean addMarker(int x, int y) {
         if (legalMove(x,y)) {
@@ -182,7 +196,7 @@ public class Board implements Cloneable {
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
                     if (legalMove(i, j)) {
-                        possibleMoves.add(new int[][] {{-1, -1},{i, j}});
+                        possibleMoves.add(new int[][] {nextboard ,{i, j}});
                     }
                 }
             }

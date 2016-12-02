@@ -1,16 +1,21 @@
 import java.util.Arrays;
 public class Ai {
-    Board board;
-    long timeLimit;
-    PlayerNode root;
-    OpponentNode chosenChild;
+    private Board board;
+    private long timeLimit;
+    private PlayerNode root;
+    private OpponentNode chosenChild;
+    private int marker;
     public Ai(int marker, Board board, double timeLimit) {
+        this.marker = marker;
         MonteCarloTreeNode.setMarker(marker);
         root = new PlayerNode(1, 1, new int[][] {{-1 ,-1},{0,0}});
         root.populate(board);
         chosenChild = new OpponentNode(1, 1, new int[][] {{-1,-1},{0,0}});
         this.board = board;
         this.timeLimit = (long) (timeLimit*1000);
+    }
+    public int getMarker() {
+        return marker;
     }
     public void makeMove() {
         long timer = System.currentTimeMillis();
@@ -29,5 +34,8 @@ public class Ai {
              }
         }
         root.populate(board);
+    }
+    public void displayMove() {
+        BoardFX.setTile(chosenChild.getMove(), marker);
     }
 }
