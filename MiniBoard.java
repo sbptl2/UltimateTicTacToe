@@ -35,10 +35,10 @@ public class MiniBoard extends GridPane {
         if (board.getGameover()) {
             return 0;
         }
-        if (board.checkMove(this.row, this.column, row, column)) {
+        Board.Move move = new Board.Move(this.row, this.column, row, column);
+        if (board.legalMove(move)) {
             int marker = board.getMarker();
-            board.setBoard(this.row, this.column);
-            board.addMarker(row, column);
+            board.applyMove(move);
             BoardFX.refresh();
             return marker;
         }
@@ -60,8 +60,8 @@ public class MiniBoard extends GridPane {
                     if (!BoardFX.getTwoPlayer() && board.getMarker()
                         == ai.getMarker()) {
                         BoardFX.disableClick();
-                        ai.updateRoot(new int[][] {{this.row, this.column},
-                            {tile.getRow(), tile.getColumn()}});
+                        ai.updateRoot(new Board.Move(this.row, this.column,
+                            tile.getRow(), tile.getColumn()));
                         Thread thread = new Thread() {
                             public void run() {
                                 ai.makeMove();

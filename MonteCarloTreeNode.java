@@ -1,7 +1,9 @@
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import org.apache.commons.math3.distribution.BetaDistribution;
+
 public abstract class MonteCarloTreeNode {
     private ArrayList<MonteCarloTreeNode> children = new
         ArrayList<MonteCarloTreeNode>(0);
@@ -9,9 +11,9 @@ public abstract class MonteCarloTreeNode {
     private boolean childrenVisited;
     private double alpha;
     private double beta;
-    private int[][] move;
+    private Board.Move move;
     private static int myMarker;
-    public MonteCarloTreeNode(int alpha, int beta, int[][] move) {
+    public MonteCarloTreeNode(int alpha, int beta, Board.Move move) {
         this.alpha = alpha;
         this.beta = beta;
         this.move = move;
@@ -26,7 +28,7 @@ public abstract class MonteCarloTreeNode {
         alpha += increment[0];
         beta += increment[1];
     }
-    public int[][] getMove() {
+    public Board.Move getMove() {
         return move;
     }
     public static void setMarker(int marker) {
@@ -47,8 +49,9 @@ public abstract class MonteCarloTreeNode {
     private double[] randomlyPlay(Board board) {
         Random rand = new Random();
         while (!board.getGameover()) {
-                ArrayList<int[][]> moveSet = board.generateMoves();
-                int[][] move = moveSet.get(rand.nextInt(moveSet.size()));
+                HashSet<Board.Move> moves =  board.getGoodMoves();
+                Board.Move[] moveSet = moves.toArray(new Board.Move[moves.size()]);
+                Board.Move move = moveSet[rand.nextInt(moveSet.length)];
                 board.applyMove(move);
             }
         if (board.getDraw()) {
@@ -59,18 +62,18 @@ public abstract class MonteCarloTreeNode {
             return new double[] {0, 1};
         }
     }
-    protected abstract MonteCarloTreeNode generateChild(int[][] move);
+    protected abstract MonteCarloTreeNode generateChild(Board.Move move);
     protected abstract MonteCarloTreeNode selectChild();
     public void populate(Board board) {
         if (children.size() == 0) {
-             ArrayList<int[][]> moveSet = board.generateMoves();
-             for (int[][] move : moveSet) {
+             HashSet<Board.Move> moveSet = board.getGoodMoves();
+             for (Board.Move move : moveSet) {
                  children.add(generateChild(move));
              }
          }
     }
     protected double sampleBetaDist() {
-        return (new BetaDistribution(getAlpha(), getBeta())).sample();
+        return (new BetaDistribution(alpha, beta)).sample();
     }
     public void applyMove(Board board) {
         board.applyMove(move);

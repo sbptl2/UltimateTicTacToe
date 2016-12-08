@@ -1,9 +1,9 @@
 public class OpponentNode extends MonteCarloTreeNode {
-    public OpponentNode(int alpha, int beta, int[][] move) {
+    public OpponentNode(int alpha, int beta, Board.Move move) {
         super(alpha, beta, move);
     }
     @Override
-    protected PlayerNode generateChild(int move[][]) {
+    protected PlayerNode generateChild(Board.Move move) {
         return new PlayerNode(1, 1, move);
     }
     protected PlayerNode selectChild() {
