@@ -60,6 +60,9 @@ public class MiniBoard extends GridPane {
                     if (!BoardFX.getTwoPlayer() && board.getMarker()
                         == ai.getMarker()) {
                         BoardFX.disableClick();
+                        if (UltTTT.getExtreme()) {
+                            ai.stopTrialThread();
+                        }
                         ai.updateRoot(new Board.Move(this.row, this.column,
                             tile.getRow(), tile.getColumn()));
                         Thread thread = new Thread() {
@@ -81,6 +84,15 @@ public class MiniBoard extends GridPane {
                                 excep.printStackTrace();
                             }
                             ai.displayMove();
+                            System.gc();
+                            try {
+                                ai.getTrialThread().sleep(100);
+                            } catch (InterruptedException excep) {
+                                excep.printStackTrace();
+                            }
+                            if (UltTTT.getExtreme()) {
+                                ai.getTrialThread().start();
+                            }
                         });
                     }
                 });

@@ -5,6 +5,24 @@ public class Ai {
     private PlayerNode root;
     private OpponentNode chosenChild;
     private int marker;
+    private MoveThread trialThread = new MoveThread();
+
+    private class MoveThread extends Thread {
+        Thread thread;
+        public MoveThread() {
+            thread = this;
+        }
+        public void run() {
+            long timer = System.currentTimeMillis();
+            while (System.currentTimeMillis() - timer < 120000 && thread == this) {
+                root.trial(board.deepCopy());
+            }
+        }
+        public void kill() {
+            thread = null;
+        }
+    }
+
     public Ai(int marker, Board board, double timeLimit) {
         this.marker = marker;
         MonteCarloTreeNode.setMarker(marker);
@@ -18,9 +36,6 @@ public class Ai {
         return marker;
     }
     public void makeMove() {
-        if (board.getGameover()) {
-            throw new RuntimeException();
-        }
         long timer = System.currentTimeMillis();
         while (System.currentTimeMillis() - timer < timeLimit) {
             root.trial(board.deepCopy());
@@ -40,5 +55,12 @@ public class Ai {
     }
     public void displayMove() {
         BoardFX.setTile(chosenChild.getMove().toArray(), marker);
+    }
+    public Thread getTrialThread() {
+        return trialThread;
+    }
+    public void stopTrialThread() {
+        trialThread.kill();
+        trialThread = new MoveThread();
     }
 }
