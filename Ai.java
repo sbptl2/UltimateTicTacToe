@@ -21,13 +21,10 @@ public class Ai {
         if (board.getGameover()) {
             throw new RuntimeException();
         }
-        int iters = 0;
         long timer = System.currentTimeMillis();
         while (System.currentTimeMillis() - timer < timeLimit) {
             root.trial(board.deepCopy());
-            iters++;
         }
-        System.out.println(iters);
         chosenChild = root.maxNode();
         chosenChild.applyMove(board);
     }

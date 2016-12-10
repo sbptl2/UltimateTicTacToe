@@ -8,7 +8,6 @@ public abstract class MonteCarloTreeNode {
     private ArrayList<MonteCarloTreeNode> children = new
         ArrayList<MonteCarloTreeNode>(0);
     private boolean visited;
-    private boolean childrenVisited;
     private double alpha;
     private double beta;
     private Board.Move move;
@@ -33,18 +32,6 @@ public abstract class MonteCarloTreeNode {
     }
     public static void setMarker(int marker) {
         myMarker = marker;
-    }
-    private boolean visitedAll() {
-        if (childrenVisited) {
-            return true;
-        }
-        for (MonteCarloTreeNode child : children) {
-            if (!child.visited) {
-                return false;
-            }
-        }
-        childrenVisited = true;
-        return true;
     }
     private double[] randomlyPlay(Board board) {
         Random rand = new Random();

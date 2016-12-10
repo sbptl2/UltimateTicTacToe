@@ -284,10 +284,19 @@ public class Board {
         return victories;
     }
     public HashSet<Move> getGoodMoves() {
+        HashSet<Move> moves = new HashSet<>();
         if (canMove()) {
-            return goodMoves.get(marker % 2).get(nextboard[0]).get(nextboard[1]);
+            for (Move move : goodMoves.get(marker % 2).get(nextboard[0]).get(nextboard[1])) {
+                if (move.getWinningMove()) {
+                    Move goodMove = move;
+                    moves.clear();
+                    moves.add(goodMove);
+                    break;
+                }
+                moves.add(move);
+            }
+            return moves;
         } else {
-            HashSet<Move> moves = new HashSet<>();
             outerloop:
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
