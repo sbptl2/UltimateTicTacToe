@@ -179,11 +179,13 @@ public class Board {
     }
     private boolean boardWin(int[][] boardIn, int x, int y, int marker) {
         if (boardIn[x][(y + 1) % 3] == marker
-            && boardIn[x][(3 + (y - 1) % 3) % 3] == marker) {
+            && boardIn[x][(3 + (y - 1) % 3) % 3] == marker
+            && boardIn[x][y] == marker) {
             return true;
         }
         if (boardIn[(x + 1) % 3][y] == marker
-            && boardIn[(3 + (x - 1) % 3) % 3][y] == marker) {
+            && boardIn[(3 + (x - 1) % 3) % 3][y] == marker
+            && && boardIn[x][y] == marker) {
             return true;
         }
         if (boardIn[0][0] == marker && boardIn[1][1] == marker
